@@ -42,6 +42,10 @@ const renderPlayers = async () => {
 
 const renderSinglePlayer = () => {
   const $players = document.querySelector("div.players");
+  const $button = document.querySelector("div.button");
+
+  $button.innerHTML = "<h2>Back to All Puppies</h2>";
+
   $players.innerHTML = `
         <section>
             <div>
@@ -51,8 +55,10 @@ const renderSinglePlayer = () => {
             </div>
         </section>
     `;
-  $players.querySelector("section").addEventListener("click", () => {
+
+  $button.querySelector("h2").addEventListener("click", () => {
     state.selectedPlayer = null;
+    $button.replaceChildren();
     render();
     window.location.hash = "";
   });
