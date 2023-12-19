@@ -33,6 +33,7 @@ const renderPlayers = async () => {
     section.addEventListener("click", () => {
       state.selectedPlayer = player;
       render();
+      window.location.hash = player.id;
     });
     return section;
   });
@@ -50,22 +51,36 @@ const renderSinglePlayer = () => {
             </div>
         </section>
     `;
-
   $players.querySelector("section").addEventListener("click", () => {
     state.selectedPlayer = null;
     render();
+    window.location.hash = "";
   });
 };
 
 const render = () => {
   if (!state.selectedPlayer) {
     renderPlayers();
+  } else {
+    renderSinglePlayer();
   }
-  renderSinglePlayer();
 };
 
+const loadPlayerFromHash = async () => {
+  if (state.players.length === 0) {
+    await getPlayers();
+  }
+  const idFromHash = +window.location.hash.slice(1);
+  state.selectedPlayer = state.players.find(
+    (player) => player.id === idFromHash
+  );
+  render();
+};
+
+window.addEventListener("hashchange", loadPlayerFromHash);
+
 const init = async () => {
-  renderPlayers();
+  loadPlayerFromHash();
 };
 
 init();
