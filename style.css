@@ -10,6 +10,7 @@ h1 {
 .players {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 section {

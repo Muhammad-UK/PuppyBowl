@@ -21,19 +21,47 @@ const renderPlayers = async () => {
 
   const $players = document.querySelector("div.players");
 
-  $players.innerHTML = state.players
-    .map(
-      (player) => `
+  const $playersSection = state.players.map((player) => {
+    const section = document.createElement("section");
+    section.innerHTML = `
+        <div>
+            <h2>${player.name}</h2>
+            <p>${player.breed}</p>
+        </div>
+    `;
+
+    section.addEventListener("click", () => {
+      state.selectedPlayer = player;
+      render();
+    });
+    return section;
+  });
+  $players.replaceChildren(...$playersSection);
+};
+
+const renderSinglePlayer = () => {
+  const $players = document.querySelector("div.players");
+  $players.innerHTML = `
         <section>
             <div>
-                <h2>${player.name}</h2>
-                <p>${player.breed}</p>
-                <img src="${player.imageUrl}">
+                <h2>${state.selectedPlayer.name}</h2>
+                <p>${state.selectedPlayer.breed}</p>
+                <img src="${state.selectedPlayer.imageUrl}">
             </div>
         </section>
-    `
-    )
-    .join("");
+    `;
+
+  $players.querySelector("section").addEventListener("click", () => {
+    state.selectedPlayer = null;
+    render();
+  });
+};
+
+const render = () => {
+  if (!state.selectedPlayer) {
+    renderPlayers();
+  }
+  renderSinglePlayer();
 };
 
 const init = async () => {
