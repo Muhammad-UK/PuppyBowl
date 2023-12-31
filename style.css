@@ -1,10 +1,14 @@
 body {
   font-family: "Comic Sans MS", "Comic Sans";
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(to right, rgb(255, 123, 0), rgb(255, 217, 0));
 }
 
 h1 {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .players {
@@ -13,10 +17,19 @@ h1 {
   justify-content: center;
 }
 
+.button:empty {
+  display: none;
+}
+
 .button {
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
+  margin: auto;
+  padding: 0.4rem 1rem;
+  border: 2px solid black;
+  width: 15rem;
+}
+.button:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 section {
@@ -24,6 +37,14 @@ section {
   padding: 1rem;
   display: flex;
   margin: 0.25rem;
+}
+section:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4);
+}
+section.singlePuppy:hover {
+  cursor: default !important;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 img {

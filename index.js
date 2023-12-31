@@ -53,7 +53,7 @@ const renderSinglePlayer = () => {
 
   $button.innerHTML = "<h2>Back to All Puppies</h2>";
   $players.innerHTML = `
-        <section>
+        <section class="singlePuppy">
             <div>
                 <h2>${state.selectedPlayer.name}</h2>
                 <p>${state.selectedPlayer.breed}</p>
