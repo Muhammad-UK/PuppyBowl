@@ -1,19 +1,37 @@
 // Defining the API and necessary information as per the API's documentation
 const COHORT = "2309-AM";
-const API = "https://fsa-puppy-bowl.herokuapp.com/api/" + COHORT;
+const puppyAPI = "https://fsa-puppy-bowl.herokuapp.com/api/" + COHORT;
+const pokemonAPI = "https://pokeapi.co/api/v2";
+
+const generateRandomPokemonNumber = () => {
+  return Math.floor(Math.random() * 1026) + 1;
+};
 
 // Initializing a 'state' variable to control / hold all our current data
 const state = {
   players: [],
   selectedPlayer: null,
+  pokemonSprite: null,
 };
 
 // Defining an async function to fetch data from the API for whatever specific data we want to use, in this case, data.players
 const getPlayers = async () => {
   try {
-    const response = await fetch(API + "/players");
+    const response = await fetch(puppyAPI + "/players");
     const json = await response.json();
     state.players = json.data.players;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getPokemon = async () => {
+  try {
+    const response = await fetch(
+      pokemonAPI + "/pokemon" + `/${generateRandomPokemonNumber()}`
+    );
+    const json = await response.json();
+    state.pokemonSprite = json.sprites.front_default;
   } catch (error) {
     console.log(error);
   }
@@ -62,8 +80,8 @@ const renderSinglePlayer = () => {
         </section>
     `;
 
-  // Checking if the 'button' (really it's just an h2) is clicked meaning the user wants to go back to the main page, then updating the state as necessary
-  $button.querySelector("h2").addEventListener("click", () => {
+  // Checking if the 'button' (really it's just an h2 inside a section) is clicked meaning the user wants to go back to the main page, then updating the state as necessary
+  $button.addEventListener("click", () => {
     state.selectedPlayer = null;
     $button.replaceChildren();
     render();
@@ -71,8 +89,17 @@ const renderSinglePlayer = () => {
   });
 };
 
+const renderPokemonSprite = () => {
+  const $imgElement = document.querySelector(".pokemonSprite");
+  if (state.pokemonSprite !== null) {
+    $imgElement.src = state.pokemonSprite;
+    $imgElement.style.display = "block";
+  }
+};
+
 // Defining a specific render function to reuse renderPlayers and renderSinglePlayer functions, checking the value of state first
 const render = () => {
+  renderPokemonSprite();
   if (!state.selectedPlayer) {
     renderPlayers();
   } else {
@@ -84,11 +111,13 @@ const render = () => {
 const loadPlayerFromHash = async () => {
   if (state.players.length === 0) {
     await getPlayers();
+    await getPokemon();
   }
   const idFromHash = +window.location.hash.slice(1);
   state.selectedPlayer = state.players.find(
     (player) => player.id === idFromHash
   );
+  getPokemon();
   render();
 };
 

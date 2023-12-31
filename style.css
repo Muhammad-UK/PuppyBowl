@@ -50,3 +50,10 @@ section.singlePuppy:hover {
 img {
   width: 15rem;
 }
+
+.pokemonSprite {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 5rem;
+}
